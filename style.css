@@ -1,3 +1,9 @@
 .colorBack{
     background-color: azure;
 }
+
+@media print{
+    hideInPrint{
+        display: none;
+    }
+}

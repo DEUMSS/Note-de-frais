@@ -227,7 +227,7 @@
     </section>
     <div class="row justify-content-end mt-5">
         <div class="col-3">
-            <button class="btn btn-primary" onclick="window.print()">Imprimer</button>
+            <button class="btn btn-primary hideInPrint" onclick="window.print()">Imprimer</button>
         </div>
     </div>
 </body>

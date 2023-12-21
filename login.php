@@ -79,7 +79,7 @@ if( isset( $_GET['error'] ) ) {
         ?>
         <div class="row">
             <div class="col-12">
-                <form name="accesform" method="post" action="validlogin.php">
+                <form name="accesform" method="post" action="validLogin.php">
                     <div class="mb-3 row">
                         <label for="login" class="col-sm-2 col-form-label">Login</label>
                         <div class="col-sm-4">

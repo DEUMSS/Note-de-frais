@@ -110,7 +110,7 @@
             ':numLicence' => $licenceNum,
             ':idLigue' => $idLigue
          ]);
-         if( !$isInsertOk ) {
+         if( $isInsertOk == false ) {
             echo "Erreur lors de l'enregistrement";
             die;
          } else {

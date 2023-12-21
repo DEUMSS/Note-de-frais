@@ -54,31 +54,33 @@
     </header>
 
     <?php
-        $LicenceNum = str_replace(' ', '', $_POST['numLicence']);
-        if(isset($_POST['nom']) || isset($LicenceNum )){
-            if(strlen($LicenceNum )< 12){
-                header('Location: registerStep1.php?invalidLicence=1');
-                exit;
-            }elseif(!is_numeric($LicenceNum )){
-                header('Location: registerStep1.php?invalidLicence=1');
-                exit;
+        if(isset($_SESSION['numLicence'])){
+            $LicenceNum = str_replace(' ', '', $_POST['numLicence']);
+            if(isset($_POST['nom']) || isset($LicenceNum )){
+                if(strlen($LicenceNum )< 12){
+                    header('Location: registerStep1.php?invalidLicence=1');
+                    exit;
+                }elseif(!is_numeric($LicenceNum )){
+                    header('Location: registerStep1.php?invalidLicence=1');
+                    exit;
+                }
+            }
+
+            if(isset($LicenceNum )){
+                $req = 'SELECT AD_id FROM adherent where AD_num_licence = :numLicence AND AD_nom = :nom';
+                $reponse = $db->prepare($req);
+                $reponse->execute([':numLicence'=>$LicenceNum , ':nom'=>$_POST['nom']]);
+                $resultat = $reponse->fetch(pdo::FETCH_ASSOC);
+                if(count($resultat) == 0){
+                    header('Location: registerStep1.php?invalidLicenceNum=1');
+                    die;
+                }
+                $_SESSION['idAdherent'] = $resultat['AD_id'];
+                $_SESSION['nom'] = $_POST['nom'];
+                $_SESSION['numLicence'] = $LicenceNum ;
             }
         }
-
-        if(isset($LicenceNum )){
-            $req = 'SELECT AD_id FROM adherent where AD_num_licence = :numLicence AND AD_nom = :nom';
-            $reponse = $db->prepare($req);
-            $reponse->execute([':numLicence'=>$LicenceNum , ':nom'=>$_POST['nom']]);
-            $resultat = $reponse->fetch(pdo::FETCH_ASSOC);
-            if(count($resultat) == 0){
-                header('Location: registerStep1.php?invalidLicenceNum=1');
-                die;
-            }
-            $_SESSION['idAdherent'] = $resultat['AD_id'];
-            $_SESSION['nom'] = $_POST['nom'];
-            $_SESSION['numLicence'] = $LicenceNum ;
-        }
-
+        
         $errorMessage  = '';
         if( isset( $_GET['emptyCar'] ) ) {
             $errorMessage = 'Votre mot de passe doit contenir un ou plusieurs caractères spéciaux.';
